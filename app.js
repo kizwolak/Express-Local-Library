@@ -5,17 +5,10 @@ const cookieParser = require("cookie-parser");
 const logger = require("morgan");
 const mongoose = require("mongoose");
 mongoose.set("strictQuery", false);
-const mongoDB =
-  "mongodb+srv://kizwolak:Chujdupa12@cluster0.i1y520c.mongodb.net/local_library?retryWrites=true&w=majority";
 const indexRouter = require("./routes/index");
 const usersRouter = require("./routes/users");
 
 const app = express();
-
-main().catch((err) => console.log(err));
-async function main() {
-  await mongoose.connect(mongoDB);
-}
 
 // view engine setup
 app.set("views", path.join(__dirname, "views"));
