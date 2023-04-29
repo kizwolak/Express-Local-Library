@@ -5,7 +5,6 @@ const asyncHandler = require("express-async-handler");
 // Display list of all Genre.
 exports.genre_list = asyncHandler(async (req, res, next) => {
   const allGenres = await Genre.find().sort({ name: 1 }).exec();
-  console.log(allGenres);
   res.render("genre_list", {
     title: "Genre List",
     genre_list: allGenres,
@@ -17,6 +16,7 @@ exports.genre_detail = asyncHandler(async (req, res, next) => {
     Genre.findById(req.params.id).exec(),
     Book.find({ genre: req.params.id }, "title summary").exec(),
   ]);
+
   if (genre === null) {
     const err = new Error("Genre not found");
     err.stauts = 404;
