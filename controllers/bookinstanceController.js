@@ -99,7 +99,7 @@ exports.bookinstance_delete_get = asyncHandler(async (req, res, next) => {
 // Handle BookInstance delete on POST.
 exports.bookinstance_delete_post = asyncHandler(async (req, res, next) => {
   const bookinstance = await Promise.resolve(
-    BookInstance.findById(req.params.id.exec())
+    BookInstance.findById(req.params.id).exec()
   );
   await BookInstance.findByIdAndRemove(req.body.bookinstanceid);
   res.redirect("/catalog/bookinstances");
@@ -143,6 +143,7 @@ exports.bookinstance_update_post = [
       imprint: req.body.imprint,
       status: req.body.status,
       due_back: req.body.due_back,
+      _id: req.params.id,
     });
 
     if (!errors.isEmpty()) {
@@ -156,8 +157,12 @@ exports.bookinstance_update_post = [
       });
       return;
     } else {
-      await bookInstance.save();
-      res.redirect(bookInstance.url);
+      const thebookinstance = await BookInstance.findByIdAndUpdate(
+        req.params.id,
+        bookInstance,
+        {}
+      );
+      res.redirect(thebookinstance.url);
     }
   }),
 ];
